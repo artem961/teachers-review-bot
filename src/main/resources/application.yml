@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: telega
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tg_bot
+    driver-class-name: org.postgresql.Driver
+    username: admin
+    password: 1111
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+bot:
+  token: 7893416481:AAEFuNyx7BpGTKn6IlEOvS-9vcDVMHn918E
+  name: test
