@@ -1,4 +1,4 @@
-package test.project.telega.bot.keyboard.inline;
+package test.project.telega.bot.tools.keyboard.inline;
 
 import lombok.Setter;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;

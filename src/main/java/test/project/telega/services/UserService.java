@@ -1,27 +1,35 @@
 package test.project.telega.services;
 
 import org.springframework.stereotype.Service;
-import test.project.telega.bot.scenaries.states.UserState;
+import test.project.telega.bot.scenarios.Scenario;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class UserService {
-    private final Map<Long, UserState> users;
+    private final Map<Long, Scenario> userScenarios;
 
     public UserService() {
-        this.users = new ConcurrentHashMap<>();
+        userScenarios = new ConcurrentHashMap<>();
     }
 
-    public UserState getState(Long userId){
-        if (this.users.get(userId) == null) {
-            users.put(userId, UserState.NONE);
+    public Scenario getUserScenario(Long userId){
+        return userScenarios.get(userId);
+    }
+
+    public void setUserScenario(Long userId, Scenario scenario){
+        this.userScenarios.put(userId, scenario);
+    }
+
+    public void clearUserScenario(Long userId){
+        userScenarios.remove(userId);
+    }
+
+    public boolean isUserInScenario(Long userId){
+        if (userScenarios.containsKey(userId)){
+            return userScenarios.get(userId) != null;
         }
-        return this.users.get(userId);
-    }
-
-    public void setState(Long userId, UserState state){
-        this.users.put(userId, state);
+        return false;
     }
 }

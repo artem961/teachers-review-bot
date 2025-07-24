@@ -6,31 +6,20 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Component
 public class CommandManager {
-    @Getter
-    private Set<Command> commands;
+    private Map<String, Command> commands;
 
-    public CommandManager() {
-        commands = Collections.synchronizedSet(new HashSet<>());
-    }
-
-    public void addCommand(Command command) {
-        commands.add(command);
+    public CommandManager(List<Command> commands) {
+        this.commands = commands.stream()
+                .collect(Collectors.toMap(Command::getCommandName, command -> command));
     }
 
     public Optional<Command> getCommandByName(String commandName) {
-        for (Command command : commands) {
-            if (command.getCommandName().equals(commandName)) {
-                return Optional.ofNullable(command);
-            }
-        }
-        return Optional.empty();
+        return Optional.ofNullable(commands.get(commandName));
     }
 }

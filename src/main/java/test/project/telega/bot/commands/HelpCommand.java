@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class HelpCommand extends Command {
-    @Autowired
-    private CommandManager commandManager;
+    private List<Command> commands;
 
-    public HelpCommand() {
+    public HelpCommand(List<Command> commands) {
         super("help");
+        this.commands = commands;
     }
 
     @Override
     public BotApiMethod execute(Update update) {
-       List<String> commandNames = commandManager.getCommands().stream()
+       List<String> commandNames = commands.stream()
                .map(Command::getCommandName)
                .map(name -> "/"+name)
                .collect(Collectors.toList());
