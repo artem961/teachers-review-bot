@@ -4,15 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import test.project.telega.bot.scenarios.subject.InputSubjectScenario;
+import test.project.telega.bot.scenarios.subject.CreateSubjectScenario;
 
 @Component
 public class NewSubjectCommand extends Command {
     @Autowired
-    private InputSubjectScenario  inputSubjectScenario;
+    private CreateSubjectScenario inputSubjectScenario;
 
     public NewSubjectCommand() {
-        super("newSubject");
+        super("new_subject",
+                "➕ Add new subject");
     }
 
     @Override

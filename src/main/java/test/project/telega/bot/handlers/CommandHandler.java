@@ -11,8 +11,11 @@ import test.project.telega.services.UserService;
 
 import java.util.Optional;
 
+import static test.project.telega.bot.tools.UpdateParser.getMessage;
+import static test.project.telega.bot.tools.UpdateParser.getUserId;
+
 @Component
-@Order(1)
+@Order(2)
 @RequiredArgsConstructor
 public class CommandHandler implements UpdateHandler {
     private final CommandManager commandManager;
@@ -29,10 +32,11 @@ public class CommandHandler implements UpdateHandler {
 
     @Override
     public void handleUpdate(Update update) {
-        Long userId = update.getMessage().getFrom().getId();
-        String text = update.getMessage().getText();
+        Long userId = getUserId(update);
+        String text = getMessage(update);
 
         userService.clearUserScenario(userId);
+
         Optional<Command> commandOptional = commandManager.getCommandByName(text.substring(1));
         if (commandOptional.isPresent()) {
             Command command = commandOptional.get();

@@ -1,15 +1,19 @@
 package test.project.telega.bot.tools.keyboard.inline;
 
 import lombok.Setter;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public class InlineKeyboardController<T> {
+import static test.project.telega.bot.tools.MessageGenerator.sendMessage;
+import static test.project.telega.bot.tools.UpdateParser.getCallbackData;
+import static test.project.telega.bot.tools.UpdateParser.getUserId;
+
+public class CollectionPeekerController<T> {
     private final Function<T, String> nameGenerator;
     private final Function<T, String> callbackDataGenerator;
     private final Map<Long, Integer> userPages;
@@ -22,11 +26,11 @@ public class InlineKeyboardController<T> {
         userPages = new ConcurrentHashMap<>();
     }
 
-    public InlineKeyboardController(Function<T, String> nameGenerator,
-                                    Function<T, String> callbackDataGenerator,
-                                    Collection<T> collectionToShow,
-                                    Integer pageWidth,
-                                    Integer pageHeight
+    public CollectionPeekerController(Function<T, String> nameGenerator,
+                                      Function<T, String> callbackDataGenerator,
+                                      Collection<T> collectionToShow,
+                                      Integer pageWidth,
+                                      Integer pageHeight
     ) {
         this.nameGenerator = nameGenerator;
         this.callbackDataGenerator = callbackDataGenerator;
@@ -50,9 +54,13 @@ public class InlineKeyboardController<T> {
 
         if (page == null) {
             return 0;
-        } else{
+        } else {
             return page;
         }
+    }
+
+    public void clearUserData(Long userId) {
+        userPages.remove(userId);
     }
 
     public Integer getPagesCount() {
@@ -75,28 +83,7 @@ public class InlineKeyboardController<T> {
     }
 
     public boolean isPageButtonSelected(String callbackData) {
-        if (callbackData.equals("previous") || callbackData.equals("next")) {
-            return true;
-        }
-        return false;
-    }
-    //endregion
-
-    //region back
-    public boolean isBackButtonSelected(String callbackData) {
-        if (callbackData.equals("back")) {
-            return true;
-        }
-        return false;
-    }
-    //endregion
-
-    //region confirm
-    public boolean isConfirmButtonSelected(String callbackData) {
-        if (callbackData.equals("confirm")) {
-            return true;
-        }
-        return false;
+        return callbackData.equals("previous") || callbackData.equals("next");
     }
     //endregion
 
@@ -128,4 +115,12 @@ public class InlineKeyboardController<T> {
         return generator.getKeyboard();
     }
 
+    public boolean checkAndUpdateKeyboard(Update update) {
+        if (update.hasCallbackQuery() && isPageButtonSelected(getCallbackData(update))) {
+            updateUserPage(getUserId(update), getCallbackData(update));
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

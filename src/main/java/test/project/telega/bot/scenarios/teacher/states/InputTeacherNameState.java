@@ -3,15 +3,15 @@ package test.project.telega.bot.scenarios.teacher.states;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import test.project.telega.bot.scenarios.ScenarioState;
 import test.project.telega.bot.scenarios.StateResult;
 import test.project.telega.bot.scenarios.contexts.TeacherContext;
 
-import static test.project.telega.bot.tools.keyboard.inline.MessageGenerator.sendMessage;
-import static test.project.telega.bot.tools.keyboard.inline.UpdateParser.getMessage;
-import static test.project.telega.bot.tools.keyboard.inline.UpdateParser.getUserId;
+import static test.project.telega.bot.tools.MessageGenerator.editMessage;
+import static test.project.telega.bot.tools.MessageGenerator.sendMessage;
+import static test.project.telega.bot.tools.UpdateParser.getMessage;
+import static test.project.telega.bot.tools.UpdateParser.getUserId;
 
 @Component
 @RequiredArgsConstructor
@@ -20,8 +20,15 @@ public class InputTeacherNameState implements ScenarioState<TeacherContext> {
 
     @Override
     public BotApiMethod<?> enterToState(TeacherContext context) {
-        return sendMessage(context.getChatId(),
-                "Write teacher name");
+        if (context.getMessageId() != null) {
+            return editMessage(context.getChatId(),
+                    context.getMessageId(),
+                    "Write teacher name");
+        }
+        else{
+            return sendMessage(context.getChatId(),
+                    "Write teacher name");
+        }
     }
 
     @Override

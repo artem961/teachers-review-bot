@@ -1,18 +1,14 @@
 package test.project.telega.bot.commands;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import test.project.telega.services.UserService;
-
-import static test.project.telega.bot.tools.keyboard.inline.UpdateParser.getUserId;
 
 @Component
 public class StartCommand extends Command {
     public StartCommand() {
-        super("start");
+        super("start", "Starts the bot");
     }
 
     @Override
@@ -20,8 +16,14 @@ public class StartCommand extends Command {
         return SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
-                .text("Nice to meet you in our bot!\n" +
-                        "To see available commands print /help")
+                .text("""
+                        📌 ITMO Teachers Reviews
+                        
+                        A bot where students can anonymously leave reviews about ITMO professors.
+                        
+                        🔎 /find — search for teachers
+                        ⭐ /review — submit your review
+                        """)
                 .build();
     }
 }

@@ -14,9 +14,11 @@ spring:
       hibernate:
         format_sql: true
     database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
 
 bot:
-  token: 5860903181:AAEs0xASD5NvmloUmMcsPwACwAUY_gL6a8Y
-  name: test
+  token: ${BOT_TOKEN}
+  name: ${BOT_NAME}
+
+logging:
+  level:
+    test: DEBUG

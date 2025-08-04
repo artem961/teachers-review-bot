@@ -1,8 +1,10 @@
 package test.project.telega.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import test.project.telega.data.entities.Subject;
@@ -10,6 +12,9 @@ import test.project.telega.data.entities.Teacher;
 import test.project.telega.data.repositories.SubjectRepository;
 import test.project.telega.data.repositories.TeacherRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,20 +27,38 @@ public class TeacherService {
     @Autowired
     private SubjectRepository subjectRepository;
 
-    public List<Teacher> findTeacherBySurnameFirstNameAndLastName(String surname,
-                                                                  String firstName,
-                                                                  String lastName
-    ) {
-        return teacherRepository.getTeacherBySurnameIgnoreCaseAndFirstNameIgnoreCaseAndLastNameIgnoreCase(surname, firstName, lastName);
+    public List<Teacher> findTeacherBySurnameAndFirstName(String surname, String firstName) {
+        return teacherRepository.findTeacherBySurnameContainsIgnoreCaseAndFirstNameContainsIgnoreCase(surname, firstName);
     }
 
-    public List<Teacher> findTeacherByFirstNameAndLastName(String firstName,
-                                                           String lastName) {
-        return teacherRepository.getTeacherByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
+    public List<Teacher> findTeacher(List<String> data) {
+        if (data == null || data.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Specification<Teacher> spec = ((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            for (String s : data) {
+                String pattern = "%" + s.toLowerCase() + "%";
+                Predicate predicate = criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("surname")), pattern),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("firstName")), pattern),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), pattern)
+                );
+                predicates.add(predicate);
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
+       return teacherRepository.findAll(spec);
     }
 
-    public List<Teacher> findTeacherBySurname(String surname) {
-        return teacherRepository.getTeacherBySurnameIgnoreCase(surname);
+    public List<Teacher> findTeacher(String... data) {
+        if (data != null && data.length > 0) {
+            return findTeacher(Arrays.asList(data));
+        } else{
+            return Collections.emptyList();
+        }
     }
 
     public List<Teacher> findAll(){

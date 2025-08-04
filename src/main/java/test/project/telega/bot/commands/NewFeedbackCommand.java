@@ -11,7 +11,8 @@ public class NewFeedbackCommand extends Command {
     @Autowired
     private CreateFeedbackScenario createFeedbackScenario;
     public NewFeedbackCommand() {
-        super("newFeedback");
+        super("review",
+                "\uD83D\uDCDD Submit new professor review");
     }
 
     @Override

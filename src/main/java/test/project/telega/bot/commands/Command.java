@@ -17,5 +17,8 @@ public abstract class Command {
     @Getter
     private final String commandName;
 
+    @Getter
+    private final String description;
+
     public abstract BotApiMethod execute(Update update);
 }

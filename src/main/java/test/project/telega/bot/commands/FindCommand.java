@@ -12,7 +12,8 @@ public class FindCommand extends Command {
     private FindTeacherScenario findTeacherScenario;
 
     public FindCommand() {
-        super("find");
+        super("find",
+                "\uD83D\uDD0D Search for professor reviews");
     }
 
     @Override

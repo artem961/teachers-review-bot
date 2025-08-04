@@ -1,4 +1,4 @@
-package test.project.telega.bot.tools.keyboard.inline;
+package test.project.telega.bot.tools;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 

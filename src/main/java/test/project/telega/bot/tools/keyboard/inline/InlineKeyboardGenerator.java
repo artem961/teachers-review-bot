@@ -1,6 +1,7 @@
 package test.project.telega.bot.tools.keyboard.inline;
 
 import lombok.Getter;
+import lombok.NonNull;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
@@ -42,6 +43,22 @@ public class InlineKeyboardGenerator {
                 .text(buttonText)
                 .callbackData(callbackData)
                 .build());
+    }
+
+    public InlineKeyboardGenerator addRow(InlineKeyboardRow row) {
+        if (row != null) {
+            builder.keyboardRow(row);
+        }
+        return this;
+    }
+
+    public InlineKeyboardGenerator addRows(@NonNull List<InlineKeyboardRow> rows) {
+        if (rows != null) {
+            for (InlineKeyboardRow row : rows) {
+                addRow(row);
+            }
+        }
+        return this;
     }
 
     public InlineKeyboardGenerator addScrollButtons(Integer previousPage, Integer nextPage) {

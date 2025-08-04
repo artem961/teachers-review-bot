@@ -15,21 +15,24 @@ public class HelpCommand extends Command {
     private List<Command> commands;
 
     public HelpCommand(List<Command> commands) {
-        super("help");
+        super("help", "commands list");
         this.commands = commands;
     }
 
     @Override
     public BotApiMethod execute(Update update) {
-       List<String> commandNames = commands.stream()
-               .map(Command::getCommandName)
+       List<String> commandsPresent = commands.stream()
+               .map(command -> command.getCommandName() + " - " + command.getDescription())
                .map(name -> "/"+name)
                .collect(Collectors.toList());
 
         return SendMessage
                 .builder()
                 .chatId(update.getMessage().getChatId())
-                .text(String.join("\n", commandNames))
+                .text("📚 <b>ITMO Teachers Reviews Bot</b>\n\n" +
+                        "Available commands:\n\n" +
+                        String.join("\n", commandsPresent))
+                .parseMode("HTML")
                 .build();
     }
 }

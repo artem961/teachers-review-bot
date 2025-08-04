@@ -10,42 +10,31 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import test.project.telega.bot.scenarios.ScenarioState;
 import test.project.telega.bot.scenarios.StateResult;
 import test.project.telega.bot.scenarios.contexts.FeedbackContext;
-import test.project.telega.bot.tools.keyboard.inline.InlineKeyboardController;
+import test.project.telega.bot.tools.keyboard.inline.BackConfirmController;
+import test.project.telega.bot.tools.keyboard.inline.CollectionPeekerController;
 import test.project.telega.bot.tools.keyboard.inline.InlineKeyboardGenerator;
 import test.project.telega.data.entities.Teacher;
 import test.project.telega.services.TeacherService;
 
-import static test.project.telega.bot.tools.keyboard.inline.MessageGenerator.sendMessage;
-import static test.project.telega.bot.tools.keyboard.inline.UpdateParser.*;
+import static test.project.telega.bot.tools.MessageGenerator.sendMessage;
+import static test.project.telega.bot.tools.UpdateParser.*;
 
 @Component
 public class ConfirmTeacherState implements ScenarioState<FeedbackContext> {
-    private final TeacherService teacherService;
     private final InputRatingState nextState;
     private final InputTeacherState previousState;
 
-    private InlineKeyboardController<Teacher> inlineController =
-            new InlineKeyboardController<>(Teacher::toString,
-                    teacher -> teacher.getId().toString(),
-                    null,
-                    1,
-                    4);
+    private BackConfirmController inlineController =  new BackConfirmController();
 
-    public ConfirmTeacherState(TeacherService teacherService,
-                               InputRatingState nextState,
+    public ConfirmTeacherState(InputRatingState nextState,
                                @Lazy InputTeacherState previousState) {
-        this.teacherService = teacherService;
         this.nextState = nextState;
         this.previousState = previousState;
     }
 
     @Override
     public BotApiMethod<?> enterToState(FeedbackContext context) {
-        inlineController.setCollectionToShow(teacherService.findAll());
-        InlineKeyboardMarkup keyboard = new InlineKeyboardGenerator(1)
-                .addConfirmButton()
-                .addBackButton()
-                .getKeyboard();
+        InlineKeyboardMarkup keyboard = inlineController.getKeyboard();
 
         if (context.getMessageId() != null) {
             return EditMessageText
@@ -69,7 +58,6 @@ public class ConfirmTeacherState implements ScenarioState<FeedbackContext> {
     public StateResult<FeedbackContext> handleUpdate(Update update, FeedbackContext context) {
         if (update.hasCallbackQuery()) {
             String callbackData = getCallbackData(update);
-            Long userId = context.getChatId();
             context.setMessageId(getMessageId(update));
 
             if (inlineController.isBackButtonSelected(callbackData)) {

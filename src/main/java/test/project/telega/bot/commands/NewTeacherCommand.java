@@ -12,7 +12,8 @@ public class NewTeacherCommand extends Command {
     private CreateTeacherScenario createTeacherScenario;
 
     public NewTeacherCommand() {
-        super("newTeacher");
+        super("new_teacher",
+                "\uD83D\uDC68\uD83C\uDFEB Add new professor");
     }
 
     @Override

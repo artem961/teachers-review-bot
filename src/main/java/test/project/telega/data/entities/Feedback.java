@@ -21,5 +21,6 @@ public class Feedback {
     @Column(nullable = false)
     private Integer rating;
 
+    @Column(length = 5000)
     private String comment;
 }

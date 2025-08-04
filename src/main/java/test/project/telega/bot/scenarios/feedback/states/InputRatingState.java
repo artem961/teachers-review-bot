@@ -3,7 +3,6 @@ package test.project.telega.bot.scenarios.feedback.states;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -13,9 +12,9 @@ import test.project.telega.bot.scenarios.contexts.FeedbackContext;
 import test.project.telega.bot.tools.keyboard.inline.InlineKeyboardGenerator;
 
 
-import static test.project.telega.bot.tools.keyboard.inline.MessageGenerator.sendMessage;
-import static test.project.telega.bot.tools.keyboard.inline.UpdateParser.*;
-import static test.project.telega.bot.tools.keyboard.inline.UpdateParser.getUserId;
+import static test.project.telega.bot.tools.MessageGenerator.sendMessage;
+import static test.project.telega.bot.tools.UpdateParser.*;
+import static test.project.telega.bot.tools.UpdateParser.getUserId;
 
 @Component
 @RequiredArgsConstructor

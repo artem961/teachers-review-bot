@@ -8,7 +8,7 @@ import test.project.telega.bot.TelegramSenderService;
 import test.project.telega.services.UserService;
 
 @Component
-@Order(2)
+@Order(3)
 @RequiredArgsConstructor
 public class ScenarioHandler implements UpdateHandler {
     private final UserService userService;

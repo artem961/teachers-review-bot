@@ -1,7 +1,7 @@
 package test.project.telega.data.entities;
 
 
-import jakarta.annotation.Nullable;
+
 import jakarta.persistence.*;
 import lombok.*;
 

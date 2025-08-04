@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Slf4j
@@ -21,7 +22,7 @@ public class TelegramSenderService {
         }
 
         try {
-            telegramClient.execute(method);
+            telegramClient.executeAsync(method);
         } catch (TelegramApiException e) {
             if (e.getCause() instanceof java.io.IOException) {
                 log.error("Network error while sending message", e);
@@ -30,6 +31,8 @@ public class TelegramSenderService {
             } else {
                 log.error("Failed to execute telegram method: {}", method, e);
             }
+        } catch (Exception e) {
+            log.error("Failed to execute telegram method: {}", method, e);
         }
     }
 

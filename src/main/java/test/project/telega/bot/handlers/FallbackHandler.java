@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import test.project.telega.bot.TelegramSenderService;
 
 @Component
-@Order
+@Order(4)
 @RequiredArgsConstructor
 public class FallbackHandler implements UpdateHandler{
     private final TelegramSenderService senderService;

@@ -8,8 +8,8 @@ import test.project.telega.bot.scenarios.ScenarioState;
 import test.project.telega.bot.scenarios.contexts.SubjectContext;
 import test.project.telega.bot.scenarios.StateResult;
 
-import static test.project.telega.bot.tools.keyboard.inline.MessageGenerator.sendMessage;
-import static test.project.telega.bot.tools.keyboard.inline.UpdateParser.getUserId;
+import static test.project.telega.bot.tools.MessageGenerator.sendMessage;
+import static test.project.telega.bot.tools.UpdateParser.getUserId;
 
 @Component
 public class InputSubjectNameState implements ScenarioState<SubjectContext> {
